@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 DOMAIN="
 google.com
 yahoo.com
