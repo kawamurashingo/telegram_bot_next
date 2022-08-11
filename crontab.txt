@@ -1,0 +1,1 @@
+#*/10 8-23 * * * /telegram_bot/telegram.sh >> /var/log/cron.log 2>&1
