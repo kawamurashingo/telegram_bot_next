@@ -9,8 +9,8 @@ cd ${DIR}
 python3 get_events.py | sed -e 's:<html-blob>::g' -e 's:</html-blob>::g' -e "s:<br>:\n:g" > schedule.txt
 
 # make text
-sed -e "s/DATE/`date +%Y-%m-%d`/" reverse.sed > make_reverse.sed
-sed -n "/`date +%Y-%m-%d`/,/^$/p" schedule.txt  | sed -f make_reverse.sed | sed -e "s:`date +%Y-%m-%d`:`date +%m/%d`:" -e "s/~.*//" > make.txt
+sed -e "s/DATE/`date +%Y-%m-%d --date tomorrow`/" reverse.sed > make_reverse.sed
+sed -n "/`date +%Y-%m-%d --date tomorrow`/,/^$/p" schedule.txt  | sed -f make_reverse.sed | sed -e "s:`date +%Y-%m-%d --date tomorrow`:`date +%m/%d --date tomorrow`:" -e "s/~.*//" > make.txt
 
 cp -f make.txt make2.txt
 test -f make.txt.`date +%Y%m%d` && diff make.txt make.txt.`date +%Y%m%d` && exit 1
@@ -69,7 +69,7 @@ TXT=`cat ./DSC/$i`
 
 DSC="
 $MEM さん \\n
-当日確認です。 \\n
+明日確認です。 \\n
 \\n
 $TXT
 ご確認よろしくお願い致します。
