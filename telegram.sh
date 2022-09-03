@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# duplication check
+cat client |awk -F',' '{print $1}' |sort |uniq -d | grep -P "\D" && exit 1
+cat member |awk -F',' '{print $1}' |sort |uniq -d | grep -P "\D" && exit 2
+
+# telegram bot id
 BOT_ID="XXXX:XXXX"
 
 DIR=`dirname $0`
