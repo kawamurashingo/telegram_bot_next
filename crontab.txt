@@ -1,2 +1,2 @@
 #*/10 8-23 * * * /telegram_bot/telegram.sh >> /var/log/cron.log 2>&1
-#*/10 8-23 * * * /telegram_bot_next/telegram.sh >> /var/log/cron.log 2>&1
+#*/10 8-23 * * * sleep 60 ; /telegram_bot_next/telegram.sh >> /var/log/cron.log 2>&1
