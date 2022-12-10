@@ -71,6 +71,8 @@ do
 ID=`echo $i |awk -F'_' '{print $1}'`
 MEM=`echo $i |awk -F'_' '{print $2}'`
 
+grep "not found" ./DSC/$i && sed -i -e "s/not found/場所確認中\\\\n※場所が決まりましたらご連絡致します/" ./DSC/$i
+
 TXT=`cat ./DSC/$i`
 
 DSC="
