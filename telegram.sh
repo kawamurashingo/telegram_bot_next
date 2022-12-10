@@ -33,8 +33,8 @@ python3 spreadsheet_member.py |sed -e 's/],/\n/g' -e 's/]//g' -e 's/\[//g' -e "s
 
 while read line
 do
-echo $line  |grep -q Title && ID=`grep "\`echo $line |awk -F'　' '{print $1}' |sed -e "s/Title://"\`" member |awk -F',' '{print $2}'`
-echo $line  |grep -q Title && MEM=`grep "\`echo $line |awk -F'　' '{print $1}' |sed -e "s/Title://"\`" member |awk -F',' '{print $1}'`
+echo $line  |grep -q Title && ID=`grep "^\`echo $line |awk -F'　' '{print $1}' |sed -e "s/Title://"\`" member |awk -F',' '{print $2}'`
+echo $line  |grep -q Title && MEM=`grep "^\`echo $line |awk -F'　' '{print $1}' |sed -e "s/Title://"\`" member |awk -F',' '{print $1}'`
 echo $line  |grep -q Title && FILE_NAME=`echo $line |sed -e "s/Title://" -e "s/　/_/g"`
 echo $line  |grep -q Title && grep "`echo $line |awk -F'　' '{print $2}'`" client >> ./FILE/${ID}_${FILE_NAME}
 echo $line  |grep -q Title || echo $line >> ./FILE/${ID}_${FILE_NAME}
