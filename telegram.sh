@@ -15,6 +15,7 @@ OLD_FILE_DATE=`ls -ltr ./FILE/ |tail -n1 |awk '{print $9}'`
 
 # get google calender schedule
 python3 get_events.py | sed -e 's:<html-blob>::g' -e 's:</html-blob>::g' -e "s:<br>:\n:g" > schedule.txt
+sed -i -E 's@^.*(https?://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]).*$@\1@' schedule.txt
 
 # make text
 sed -e "s/DATE/`date +%Y-%m-%d --date tomorrow`/" reverse.sed > make_reverse.sed
