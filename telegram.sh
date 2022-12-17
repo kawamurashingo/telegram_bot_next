@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# duplication check
-cat client |awk -F',' '{print $1}' |sort |uniq -d | grep -P "\D" && exit 1
-cat member |awk -F',' '{print $1}' |sort |uniq -d | grep -P "\D" && exit 2
-
 # telegram bot id
 BOT_ID="XXXX:XXXX"
 
@@ -35,6 +31,10 @@ python3 spreadsheet_client.py |sed -e 's/],/\n/g' -e 's/]//g' -e 's/\[//g' -e "s
 
 # get member
 python3 spreadsheet_member.py |sed -e 's/],/\n/g' -e 's/]//g' -e 's/\[//g' -e "s/'//g" -e "s/ //g" > member
+
+# duplication check
+cat client |awk -F',' '{print $1}' |sort |uniq -d | grep -P "\D" && exit 3
+cat member |awk -F',' '{print $1}' |sort |uniq -d | grep -P "\D" && exit 4
 
 while read line
 do
