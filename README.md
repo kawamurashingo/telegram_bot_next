@@ -44,7 +44,7 @@ curl -s -X GET https://api.telegram.org/bot${BOT_ID}/getUpdates | jq -r '.result
 https://api.telegram.org/bot######/getUpdates
 
 
-# edit {SHEET NAME} in spredsheet_client.py and  spredsheet_member.py 
+# edit {SHEET NAME} in spredsheet_client.py(default "client") and spredsheet_member.py(default "member") 
 cd ./telegram_bot
 #vi spreadsheet_client.py
 #vi spreadsheet_member.py
