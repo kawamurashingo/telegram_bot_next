@@ -20,10 +20,12 @@ ENV LANG="ja_JP.UTF-8" \
 
 RUN git clone https://github.com/kawamurashingo/telegram_bot
 RUN chmod 775 /telegram_bot/telegram.sh
+RUN chmod 775 /telegram_bot/logrotate.sh
 RUN /usr/bin/crontab /telegram_bot/crontab.txt
 
 RUN git clone https://github.com/kawamurashingo/telegram_bot_next
 RUN chmod 775 /telegram_bot_next/telegram.sh
+RUN chmod 775 /telegram_bot_next/logrotate.sh
 RUN /usr/bin/crontab /telegram_bot_next/crontab.txt
 
 CMD crond && tail -f /dev/null
