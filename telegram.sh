@@ -49,7 +49,7 @@ fi
 python3 spreadsheet_member.py |sed -e 's/],/\n/g' -e 's/]//g' -e 's/\[//g' -e "s/'//g" -e "s/ //g" > member_get
 
 if [ -s member_get ]; then
-    # client_getの内容がある場合、clientにコピー
+    # member_getの内容がある場合、memberにコピー
     cp -f member_get member
     echo "ファイルがコピーされました。"
 else
