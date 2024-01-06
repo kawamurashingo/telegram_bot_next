@@ -1,11 +1,11 @@
 # Google Calender Notification to Telegram
 Retrieve Google Calendar appointments and notify Telegram groups
 
-# Requirement
+# Requirement (Dockerfile)
 * Rocky Linux 8.5
 * Python > 3.6.8
 
-# Installation
+## Installation
 ```
 sudo yum update
 sudo yum install epel-release
@@ -27,15 +27,97 @@ sudo reboot
 6. Create Telegram bot account
 7. Create Telegram group
 
-# Usage
+
+## GCP Compute Engine Setup with Container-Optimized OS
+
+This guide details the steps to set up a Docker container running `pannakoota/telegram_bot` on a GCP Compute Engine instance using Container-Optimized OS.
+
+### Step 1: Launch the VM Instance
+- Choose the `pannakoota/telegram_bot` for the instance startup.
+- Set the reboot policy to "Do not delete".
+
+### Step 2: Check Running Containers
+- Once the instance is up, check the running Docker containers:
+  ```
+  kawamurashingo@instance-1 ~ $ docker ps
+  ```
+
+### Step 3: Access the Docker Container
+- Access the running container using the following command:
+  ```
+  docker exec -it [CONTAINER ID] /bin/bash
+  ```
+
+### Step 4: Inside the Docker Container
+- Verify that cron is running:
+  ```
+  ps -ef | grep cron
+  ```
+- Check the current cron jobs:
+  ```
+  crontab -l
+  ```
+
+### Step 5: Edit Configurations
+- Navigate to the `telegram_bot_next` directory:
+  ```
+  cd telegram_bot_next
+  ```
+- Edit the necessary configuration files (`credentials.json`, `get_events.py`, `main.sh`) as per your requirements.
+
+### Step 6: Update Crontab
+- Update the crontab to enable or disable specific cron jobs:
+  ```
+  crontab -e
+  ```
+- Save and exit the editor.
+
+### Step 7: Save Changes to Docker Image
+- After exiting the Docker container, save the changes made to a new Docker image:
+  ```
+  docker commit [CONTAINER ID] telegram_custom
+  ```
+
+### Step 8: Stop Original Container
+- Stop the original Docker container:
+  ```
+  docker stop [CONTAINER ID]
+  ## これをやらないと、crondのプロセスが溜まり続けてdocker_customのプロセスが変な状態になる
+  ## OCI runtime exec failed: exec failed: unable to start container process: read init-p: connection reset by peer: unknown
+  ```
+
+### Step 9: Launch Custom Container
+- Launch the customized Docker container:
+  ```
+  docker run --name telegram_custom -d telegram_custom
+  ```
+
+### Step 10: Set Container to Auto-restart
+- Ensure the custom container automatically restarts, especially after VM reboots:
+  ```
+  docker update --restart=always telegram_custom
+  ```
+- Verify the auto-restart setting:
+  ```
+  docker inspect -f "{{.Name}} {{.HostConfig.RestartPolicy.Name}}" $(docker ps -aq) | grep always
+  ```
+
+### Step 11: Reboot Test
+- Perform a reboot test to ensure everything is set up correctly:
+  ```
+  sudo reboot
+  ```
+
+
+# detail usage
 ```
 # docker
-docker run -i -t pannakoota/rockylinux /bin/bash
-
+docker run -i -t pannakoota/telegram_bot /bin/bash
+or
 # git clone
-git clone https://github.com/kawamurashingo/telegram_bot.git
+git clone https://github.com/kawamurashingo/telegram_bot_next.git
 
-# get telegram group id
+# get telegram group
 BOT_ID="XXXXXXX"
 curl -s -X GET https://api.telegram.org/bot${BOT_ID}/getUpdates | jq -r '.result[] | .message.chat.id, .message.chat.title'
 
@@ -43,9 +125,10 @@ curl -s -X GET https://api.telegram.org/bot${BOT_ID}/getUpdates | jq -r '.result
 # add addon json formatter https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa/related
 https://api.telegram.org/bot######/getUpdates
 
+# edit BOT_ID in main.sh
 
-# edit {SHEET NAME} in spredsheet_client.py(default "client") and spredsheet_member.py(default "member") 
-cd ./telegram_bot
+# edit {SHEET NAME} in spredsheet_client.py(default "client") and spredsheet_member.py(default "member")
+cd ./telegram_bot_next
 #vi spreadsheet_client.py
 #vi spreadsheet_member.py
 
@@ -63,11 +146,14 @@ chmod 755 ./telegram.sh
 sh ./telegram.sh
 
 # set cron
-*/10 8-23 * * * sh /home/xxxx/telegram_bot/telegram.sh
+*/10 8-23 * * * sh /home/xxxx/telegram_bot_next/telegram.sh
 
 ```
 
 # Note
+docker image
+ - <https://hub.docker.com/r/pannakoota/telegram_bot>
+
 how to use google api 
  - <https://zuqqhi2.com/how-to-get-my-plans-using-google-calendar-api>
 
