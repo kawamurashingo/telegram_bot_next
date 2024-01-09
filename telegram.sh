@@ -26,7 +26,7 @@ if [ -s schedule_get ]; then
     cp -f schedule_get schedule.txt
     echo "schedule_getがコピーされました。"
 else
-    echo "schedule.txtは空です。"
+    echo "schedule_getは空です。"
 fi
 
 # make text
@@ -46,7 +46,7 @@ python3 spreadsheet_client.py |sed -e 's/],/\n/g' -e 's/]//g' -e 's/\[//g' -e "s
 if [ -s client_get ]; then
     # client_getの内容がある場合、clientにコピー
     cp -f client_get client
-    echo "ファイルがコピーされました。"
+    echo "client_getがコピーされました。"
 else
     echo "client_getは空です。"
 fi
@@ -59,7 +59,7 @@ python3 spreadsheet_member.py |sed -e 's/],/\n/g' -e 's/]//g' -e 's/\[//g' -e "s
 if [ -s member_get ]; then
     # member_getの内容がある場合、memberにコピー
     cp -f member_get member
-    echo "ファイルがコピーされました。"
+    echo "member_getがコピーされました。"
 else
     echo "member_getは空です。"
 fi
